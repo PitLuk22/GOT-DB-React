@@ -13,8 +13,8 @@ export default class GotService {
 		return await res.json();
 	}
 
-	async getAllCharacters() {
-		const res = await this.getResources('/characters?page=5&pageSize=10')
+	async getAllCharacters(numberOfPage) {
+		const res = await this.getResources(`/characters?page=${numberOfPage}&pageSize=10`)
 		return res.map(char => this._transformCharacter(char));
 	}
 	async getCharacter(id) {

@@ -2,14 +2,19 @@ import { React, Component } from 'react';
 import { ListGroup, ListGroupItem } from 'reactstrap';
 import styled from 'styled-components';
 import GotService from '../../services/gotService';
-import Spinner from '../spinner/spinner';
+import InfoSpan from '../infoSpan'
 import ErrorMessage from '../errorMessage/errorMessage';
+import './randomChar';
 
 const RandomBlock = styled.div`
+	position: relative;
 	text-align: center;
 	background-color: #fff;
-	padding: 25px 25px 15px 25px;
-	margin-bottom: 20px;
+	overflow: hidden;
+	height: ${props => props.className.includes('hide') ? 0 : '300px'};
+	padding: ${props => props.className.includes('hide') ? 0 : '25px'};
+	margin-bottom: ${props => props.className.includes('hide') ? 0 : '20px'};
+	transition: ${props => props.className.includes('hide') ? 'height 1s ease, padding 1s ease, margin-bottom 1s ease .5s' : 'height 1s ease .1s, padding 1s ease .1s, margin-bottom 1s ease'};
 `;
 
 const Title = styled.h4`
@@ -31,16 +36,28 @@ export default class RandomChar extends Component {
 	state = {
 		char: {},
 		loading: true,
-		error: false
+		error: false,
+		showRandomChar: true
 	}
 
 	componentDidMount() {
 		this.updateChar();
-		// this.timerId = setInterval(this.updateChar, 1500);
+		// this.timerId = setInterval(this.updateChar, 10000);
+	}
+	componentDidUpdate(prevProps) {
+		if (this.props.showHide !== prevProps.showHide) {
+			this.showRandomChar();
+		}
 	}
 
 	componentWillUnmount() {
 		clearInterval(this.timerId);
+	}
+
+	showRandomChar() {
+		this.setState({
+			showRandomChar: this.props.showHide
+		})
 	}
 
 	onCharLoaded = (char) => {
@@ -66,14 +83,16 @@ export default class RandomChar extends Component {
 			.catch(this.onError)
 	}
 
-
 	render() {
+
+		const classNames = this.state.showRandomChar ? 'rounded' : 'rounded hide';
+
 		const { char: { name, gender, born, died, culture }, loading, error } = this.state;
 
 		if (error) {
 			return (
 				<>
-					<RandomBlock className='rounded'>
+					<RandomBlock className={classNames}>
 						<ErrorMessage />
 					</RandomBlock>
 
@@ -82,7 +101,7 @@ export default class RandomChar extends Component {
 		}
 
 		return (
-			<RandomBlock className='rounded'>
+			<RandomBlock className={classNames}>
 				<Title>Random Character: <br /> <InfoSpan info={name} load={loading} /></Title>
 				<ListGroup flush>
 					<ListGroupItem className='d-flex justify-content-between'>
@@ -107,15 +126,16 @@ export default class RandomChar extends Component {
 	}
 }
 
-const InfoSpan = ({ info, load }) => {
+// const InfoSpan = ({ info, load }) => {
 
-	info = info === '' ? info = 'no info :(' : info;
-	const spinner = load ? <Spinner /> : info;
+// 	info = info === '' ? info = 'no info :(' : info;
+// 	const spinner = load ? <Spinner /> : info;
 
-	return (
-		<>
-			<span>{spinner}</span>
-		</>
-	)
-}
+// 	return (
+// 		<>
+// 			<span>{spinner}</span>
+// 		</>
+// 	)
+// }
+// export { InfoSpan };
 

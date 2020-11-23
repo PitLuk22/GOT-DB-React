@@ -2,38 +2,28 @@ import React, { Component } from 'react';
 import { Container, Row, Col, Button } from 'reactstrap';
 import Header from '../header';
 import RandomChar from '../randomChar';
-import ItemList from '../itemList';
-import CharDetails from '../charDetails';
+import CharacterPage from '../characterPage';
 import styled from 'styled-components';
 
 const Btn = styled(Button)`
-	padding: 10px 20px;
 	width: 100%;
+	padding: 10px;
 `;
 
 export default class App extends Component {
 
 	state = {
-		showRandomChar: true,
-		selectedChar: null
-	}
-
-	onCharSelected = (id) => {
-		this.setState({
-			selectedChar: id
-		})
+		showRandomChar: true
 	}
 
 	toggleRandomChar = () => {
 		this.setState({
 			showRandomChar: !this.state.showRandomChar
 		})
-
 	}
 
 	render() {
-
-		const randomCharBlock = this.state.showRandomChar ? <RandomChar /> : null;
+		// const randomCharBlock = this.state.showRandomChar ? <RandomChar /> : null;
 		const btnText = this.state.showRandomChar ? 'Close' : 'Open';
 
 		return (
@@ -42,19 +32,15 @@ export default class App extends Component {
 					<Header />
 					<Row className='mt-5'>
 						<Col md="6" lg="4">
-							{randomCharBlock}
+							{/* {randomCharBlock} */}
+							<RandomChar showHide={this.state.showRandomChar} />
 							<Btn
 								color="primary"
 								onClick={this.toggleRandomChar}>
 								{btnText} random character block
 							</Btn>
 						</Col>
-						<Col md="6" lg="4">
-							<ItemList onCharSelected={this.onCharSelected} />
-						</Col>
-						<Col md="12" lg="4">
-							<CharDetails selectedChar={this.state.selectedChar} />
-						</Col>
+						<CharacterPage />
 					</Row>
 				</Container>
 
