@@ -13,24 +13,24 @@ export default class GotService {
 		return await res.json();
 	}
 
-	async getAllCharacters(numberOfPage) {
+	getAllCharacters = async (numberOfPage = 5) => {
 		const res = await this.getResources(`/characters?page=${numberOfPage}&pageSize=10`)
 		return res.map(char => this._transformCharacter(char));
 	}
-	async getCharacter(id) {
+	getCharacter = async (id) => {
 		const character = await this.getResources(`/characters/${id}`);
 		return this._transformCharacter(character);
 	}
-	getAllHouses() {
-		return this.getResources(`/houses?page=5&pageSize=10`);
+	getAllHouses = async (numberOfPage = 5) => {
+		return this.getResources(`/houses?page=${numberOfPage}&pageSize=10`);
 	}
-	getHouse(id) {
+	getHouse = async (id) => {
 		return this.getResources(`/houses/${id}`);
 	}
-	getAllBooks() {
-		return this.getResources(`/books?page=5&pageSize=10`);
+	getAllBooks = async (numberOfPage = 5) => {
+		return this.getResources(`/books?page=${numberOfPage}&pageSize=10`);
 	}
-	getBook(id) {
+	getBook = async (id) => {
 		return this.getResources(`/books/${id}`);
 	}
 	_transformCharacter(char) {
@@ -58,6 +58,7 @@ export default class GotService {
 	_transformBook(book) {
 		return {
 			name: book.name,
+			authors: book.authors,
 			namberOfPages: book.namberOfPages,
 			publisher: book.publisher,
 			released: book.released

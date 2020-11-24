@@ -3,6 +3,7 @@ import { Container, Row, Col, Button } from 'reactstrap';
 import Header from '../header';
 import RandomChar from '../randomChar';
 import CharacterPage from '../characterPage';
+import GotService from '../../services/gotService';
 import styled from 'styled-components';
 
 const Btn = styled(Button)`
@@ -11,6 +12,8 @@ const Btn = styled(Button)`
 `;
 
 export default class App extends Component {
+
+	got = new GotService();
 
 	state = {
 		showRandomChar: true
@@ -25,14 +28,12 @@ export default class App extends Component {
 	render() {
 		// const randomCharBlock = this.state.showRandomChar ? <RandomChar /> : null;
 		const btnText = this.state.showRandomChar ? 'Close' : 'Open';
-
 		return (
 			<>
 				<Container>
 					<Header />
 					<Row className='mt-5'>
 						<Col md="6" lg="4">
-							{/* {randomCharBlock} */}
 							<RandomChar showHide={this.state.showRandomChar} />
 							<Btn
 								color="primary"
@@ -40,7 +41,18 @@ export default class App extends Component {
 								{btnText} random character block
 							</Btn>
 						</Col>
-						<CharacterPage />
+						<CharacterPage
+							about={'characters'}
+							getData={this.got.getAllCharacters}
+							renderItem={({ name, gender }) => `${name} (${gender})`} />
+						<CharacterPage
+							about={'houses'}
+							getData={this.got.getAllHouses}
+							renderItem={({ name, region }) => `${name} (${region})`} />
+						<CharacterPage
+							about={'books'}
+							getData={this.got.getAllBooks}
+							renderItem={({ name, authors }) => `${name} (${authors})`} />
 					</Row>
 				</Container>
 

@@ -1,4 +1,4 @@
-import { React, Component } from 'react';
+import React, { Component } from 'react';
 import { ListGroup, ListGroupItem } from 'reactstrap';
 import GotService from '../../services/gotService';
 import InfoSpan from '../infoSpan'
@@ -44,7 +44,21 @@ const Term = styled.span`
 	font-weight: bold;
 `;
 
+// field contains params (gender, born, died, culture)
+// char - it's object with certain character data
+// char[field] === cahr.gender or char.born or char.died or char.culture
+const Record = ({ char, field, label, loading }) => {
+	return (
+		<ListGroupItem className='d-flex justify-content-between'>
+			<Term className='term'>{label}</Term>
+			<InfoSpan info={char[field]} load={loading} />
+		</ListGroupItem>
+	)
+}
 
+export { Record };
+
+//TODO: Заменить в этом компоненте char на что-то нейтральное!! //FIXME:
 export default class CharDetails extends Component {
 
 	got = new GotService();
@@ -107,12 +121,20 @@ export default class CharDetails extends Component {
 		}
 
 		// Correct info about certain character
-		const { char: { name, gender, born, died, culture }, loading } = this.state;
+		// const { char: { name, gender, born, died, culture }, loading } = this.state;
+		const { char, loading } = this.state;
+		const { name } = char;
+
 		return (
 			<Block className='rounded'>
 				<Title><InfoSpan info={name} load={loading} /></Title>
 				<ListGroup flush>
-					<ListGroupItem className='d-flex justify-content-between'>
+					{
+						React.Children.map(this.props.children, (child) => {
+							return React.cloneElement(child, { char, loading })
+						})
+					}
+					{/* <ListGroupItem className='d-flex justify-content-between'>
 						<Term className='term'>Gender</Term>
 						<InfoSpan info={gender} load={loading} />
 					</ListGroupItem>
@@ -127,13 +149,10 @@ export default class CharDetails extends Component {
 					<ListGroupItem className='d-flex justify-content-between'>
 						<Term className='term'>Culture</Term>
 						<InfoSpan info={culture} load={loading} />
-					</ListGroupItem>
+					</ListGroupItem> */}
 				</ListGroup>
 			</Block>
 		);
-
-
-
 	}
 }
 
