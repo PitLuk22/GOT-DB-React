@@ -47,11 +47,11 @@ const Term = styled.span`
 // field contains params (gender, born, died, culture)
 // char - it's object with certain character data
 // char[field] === cahr.gender or char.born or char.died or char.culture
-const Record = ({ char, field, label, loading }) => {
+const Record = ({ item, field, label, loading }) => {
 	return (
 		<ListGroupItem className='d-flex justify-content-between'>
 			<Term className='term'>{label}</Term>
-			<InfoSpan info={char[field]} load={loading} />
+			<InfoSpan info={item[field]} load={loading} />
 		</ListGroupItem>
 	)
 }
@@ -59,22 +59,22 @@ const Record = ({ char, field, label, loading }) => {
 export { Record };
 
 //TODO: Заменить в этом компоненте char на что-то нейтральное!! //FIXME:
-export default class CharDetails extends Component {
+export default class ItemDetails extends Component {
 
 	got = new GotService();
 
 	state = {
-		char: null,
+		item: null,
 		loading: true,
 		error: false
 	}
 
 	componentDidMount() {
-		this.getChar();
+		this.getItem();
 	}
 	componentDidUpdate(prevProps) {
-		if (this.props.selectedCharID !== prevProps.selectedCharID) {
-			this.getChar();
+		if (this.props.selectedItemID !== prevProps.selectedItemID) {
+			this.getItem();
 		}
 	}
 	componentDidCatch() {
@@ -84,19 +84,21 @@ export default class CharDetails extends Component {
 		})
 	}
 
-	getChar = () => {
-		if (!this.props.selectedCharID) {
+	getItem = () => {
+		if (!this.props.selectedItemID) {
 			return;
 		}
 		this.setState({ loading: true })
 
-		const { selectedCharID } = this.props;
+		const { selectedItemID, getData } = this.props;
 
-		this.got.getCharacter(selectedCharID)
-			.then(char => this.setState({
-				char: char,
-				loading: false
-			}))
+		getData(selectedItemID)
+			.then(item => {
+				this.setState({
+					item: item,
+					loading: false
+				})
+			})
 			.catch()
 		// this.foo.bar = 0; // error generator
 	}
@@ -111,19 +113,18 @@ export default class CharDetails extends Component {
 		}
 
 		// arrow or Spinner
-		if (!this.state.char) {
-			const spinner = !this.props.selectedCharID ? <i>&larr;</i> : <Spinner />;
+		if (!this.state.item) {
+			const Arrow_Spinner = !this.props.selectedItemID ? <i>&larr;</i> : <Spinner />;
 			return (
 				<Block className='rounded'>
-					<span>{spinner} Please, select a character!</span>
+					<span>{Arrow_Spinner} Please, select a character!</span>
 				</Block>
 			)
 		}
 
 		// Correct info about certain character
-		// const { char: { name, gender, born, died, culture }, loading } = this.state;
-		const { char, loading } = this.state;
-		const { name } = char;
+		const { item, loading } = this.state;
+		const { name } = item;
 
 		return (
 			<Block className='rounded'>
@@ -131,25 +132,9 @@ export default class CharDetails extends Component {
 				<ListGroup flush>
 					{
 						React.Children.map(this.props.children, (child) => {
-							return React.cloneElement(child, { char, loading })
+							return React.cloneElement(child, { item, loading })
 						})
 					}
-					{/* <ListGroupItem className='d-flex justify-content-between'>
-						<Term className='term'>Gender</Term>
-						<InfoSpan info={gender} load={loading} />
-					</ListGroupItem>
-					<ListGroupItem className='d-flex justify-content-between'>
-						<Term className='term'>Born</Term>
-						<InfoSpan info={born} load={loading} />
-					</ListGroupItem>
-					<ListGroupItem className='d-flex justify-content-between'>
-						<Term className='term'>Died</Term>
-						<InfoSpan info={died} load={loading} />
-					</ListGroupItem>
-					<ListGroupItem className='d-flex justify-content-between'>
-						<Term className='term'>Culture</Term>
-						<InfoSpan info={culture} load={loading} />
-					</ListGroupItem> */}
 				</ListGroup>
 			</Block>
 		);

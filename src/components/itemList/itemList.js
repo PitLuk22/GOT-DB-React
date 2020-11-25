@@ -13,12 +13,16 @@ const ListGroupItemPointer = styled(ListGroupItem)`
 		z-index: 10;
 	}
 `;
-
 const Btn = styled(Button)`
 	width: 100%;
 	padding: 10px;
 `;
+
 export default class itemList extends Component {
+	constructor(props) {
+		super(props)
+		this.booksListPage = false;
+	}
 
 	// 0) Set State
 	state = {
@@ -34,15 +38,22 @@ export default class itemList extends Component {
 		return new Date().getTime() + Math.random();
 	}
 
+	setBookslistNumber(boolean) {
+		this.booksListPage = !boolean;
+		return this.booksListPage ? 1 : 2;
+	}
+
 	onUpdateList = () => {
-		let numberOfPage = this.props.about.includes('books') ? Math.floor(Math.random() * 2 + 1) : Math.floor(Math.random() * 40 + 5);
+		let numberOfPage = this.props.about.includes('books') ? this.setBookslistNumber(this.booksListPage) : Math.floor(Math.random() * 40 + 5);
 
 		// Change state for Spinner
 		this.setState({ itemList: null });
 
-		const { getData } = this.props;
-		getData(numberOfPage)
-			.then((itemList) => this.setState({ itemList }));
+		const { getDataAll } = this.props;
+		getDataAll(numberOfPage)
+			.then((itemList) => {
+				this.setState({ itemList })
+			});
 	}
 
 	renderItems(arr) {
@@ -58,6 +69,7 @@ export default class itemList extends Component {
 			const element = item.$$typeof ? item : renderItem(item);
 			// render(item) return string. For example: `${name} ${gender}` 
 			const uniqueKey = this.generateRandomKey();
+
 			return (
 				<ListGroupItemPointer
 					key={uniqueKey}

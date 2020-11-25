@@ -43,19 +43,24 @@ export default class App extends Component {
 						</Col>
 						<CharacterPage
 							about={'characters'}
-							getData={this.got.getAllCharacters}
+							getDataAll={this.got.getAllCharacters}
+							getData={this.got.getCharacter}
+							fieldArray={['gender', 'born', 'died', 'culture']}
 							renderItem={({ name, gender }) => `${name} (${gender})`} />
 						<CharacterPage
 							about={'houses'}
-							getData={this.got.getAllHouses}
+							getDataAll={this.got.getAllHouses}
+							getData={this.got.getHouse}
+							fieldArray={['region', 'words', 'coatOfArms']}
 							renderItem={({ name, region }) => `${name} (${region})`} />
 						<CharacterPage
 							about={'books'}
-							getData={this.got.getAllBooks}
+							getDataAll={this.got.getAllBooks}
+							getData={this.got.getBook}
+							fieldArray={['country', 'authors', 'numberOfPages', 'publisher']}
 							renderItem={({ name, authors }) => `${name} (${authors})`} />
 					</Row>
 				</Container>
-
 			</>
 		);
 	}

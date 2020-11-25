@@ -22,20 +22,29 @@ export default class GotService {
 		return this._transformCharacter(character);
 	}
 	getAllHouses = async (numberOfPage = 5) => {
-		return this.getResources(`/houses?page=${numberOfPage}&pageSize=10`);
+		const res = await this.getResources(`/houses?page=${numberOfPage}&pageSize=10`);
+		return res.map(house => this._transformHouse(house));
 	}
 	getHouse = async (id) => {
-		return this.getResources(`/houses/${id}`);
+		const house = await this.getResources(`/houses/${id}`);
+		return this._transformHouse(house);
 	}
 	getAllBooks = async (numberOfPage = 5) => {
-		return this.getResources(`/books?page=${numberOfPage}&pageSize=10`);
+		const res = await this.getResources(`/books?page=${numberOfPage}&pageSize=10`);
+		return res.map(book => this._transformBook(book));
 	}
 	getBook = async (id) => {
-		return this.getResources(`/books/${id}`);
+		const book = await this.getResources(`/books/${id}`);
+		return this._transformBook(book);
 	}
+
+	getID(item) {
+		const url = item.url.split('/');
+		return url[url.length - 1];
+	}
+
 	_transformCharacter(char) {
-		const url = char.url.split('/');
-		const id = url[url.length - 1];
+		const id = this.getID(char);
 		return {
 			id: id,
 			name: char.name,
@@ -46,22 +55,26 @@ export default class GotService {
 		}
 	}
 	_transformHouse(house) {
+		const id = this.getID(house);
 		return {
+			id: id,
 			name: house.name,
 			region: house.region,
 			words: house.words,
 			titles: house.titles,
-			overlord: house.overlord,
+			coatOfArms: house.coatOfArms,
 			ancestralWeapons: house.ancestralWeapons
 		}
 	}
 	_transformBook(book) {
+		const id = this.getID(book);
 		return {
+			id: id,
 			name: book.name,
 			authors: book.authors,
-			namberOfPages: book.namberOfPages,
+			numberOfPages: book.numberOfPages,
 			publisher: book.publisher,
-			released: book.released
+			country: book.country
 		}
 	}
 }

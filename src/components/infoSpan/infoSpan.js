@@ -8,7 +8,7 @@ const InfoSpan = ({ info, load }) => {
 
 	return (
 		<>
-			<span>{spinner}</span>
+			<span style={{ textAlign: 'right' }}>{spinner}</span>
 		</>
 	)
 }
