@@ -16,6 +16,7 @@ const ListGroupItemPointer = styled(ListGroupItem)`
 const Btn = styled(Button)`
 	width: 100%;
 	padding: 10px;
+	margin-bottom: 20px;
 `;
 
 export default class itemList extends Component {
@@ -65,7 +66,7 @@ export default class itemList extends Component {
 
 			const { renderItem } = this.props;
 
-			// if current item have property $$typeof => it's a component, else it's an object 
+			// if current item have property $$typeof => it's a component (Spinner), else it's an char/book/house object 
 			const element = item.$$typeof ? item : renderItem(item);
 			// render(item) return string. For example: `${name} ${gender}` 
 			const uniqueKey = this.generateRandomKey();

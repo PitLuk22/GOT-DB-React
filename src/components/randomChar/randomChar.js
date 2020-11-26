@@ -1,4 +1,4 @@
-import { React, Component } from 'react';
+import React, { Component } from 'react';
 import { ListGroup, ListGroupItem } from 'reactstrap';
 import styled from 'styled-components';
 import GotService from '../../services/gotService';
@@ -11,11 +11,12 @@ const RandomBlock = styled.div`
 	text-align: center;
 	background-color: #fff;
 	overflow: hidden;
-	height: ${props => props.className.includes('hide') ? 0 : '300px'};
+	max-height: ${props => props.className.includes('hide') ? 0 : '500px'};
 	padding: ${props => props.className.includes('hide') ? 0 : '25px'};
 	margin-bottom: ${props => props.className.includes('hide') ? 0 : '20px'};
-	transition: ${props => props.className.includes('hide') ? 'height 1s ease, padding 1s ease, margin-bottom 1s ease .5s' : 'height 1s ease .1s, padding 1s ease .1s, margin-bottom 1s ease'};
+	transition: ${props => props.className.includes('hide') ? 'top 1s ease, max-height 1s ease, padding 1s ease, margin-bottom 1s ease .5s' : 'top 1s ease, max-height 1s ease .1s, padding 1s ease .1s, margin-bottom 1s ease'};
 `;
+
 
 const Title = styled.h4`
 	margin-bottom: 20px;
@@ -126,16 +127,4 @@ export default class RandomChar extends Component {
 	}
 }
 
-// const InfoSpan = ({ info, load }) => {
-
-// 	info = info === '' ? info = 'no info :(' : info;
-// 	const spinner = load ? <Spinner /> : info;
-
-// 	return (
-// 		<>
-// 			<span>{spinner}</span>
-// 		</>
-// 	)
-// }
-// export { InfoSpan };
 

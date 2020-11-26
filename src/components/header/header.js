@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from "react-router-dom";
 
 const HeaderBlock = styled.div`
 	height: 80px;
@@ -22,29 +23,38 @@ const HeaderLinks = styled.ul`
 	list-style-type: none;
 	color: #fff;
 	li {
-		margin-right: 30px;
-		font-size: 20px; 
+		a {
+			padding: 5px 15px;
+			margin-right: 10px;
+			font-size: 20px; 
+			border-radius: 10px; 
+			transition: all .3s ease;
+			&:hover {
+				background-color: #D7FFFE;
+				color: #000;
+			}
+		}
 	}
 `;
 
 const Header = () => {
 	return (
 		<>
-			<HeaderBlock>
+			<HeaderBlock className='header'>
 				<HeaderLogo>
-					<a href="#0">
+					<Link to="/">
 						Game of Thrones DB
-					</a>
+					</Link>
 				</HeaderLogo>
 				<HeaderLinks>
 					<li>
-						<a href="#1">Characters</a>
+						<Link to="/characters">Characters</Link>
 					</li>
 					<li>
-						<a href="#2">Houses</a>
+						<Link to="/houses">Houses</Link>
 					</li>
 					<li>
-						<a href="#3">Books</a>
+						<Link to="/books">Books</Link>
 					</li>
 				</HeaderLinks>
 			</HeaderBlock>

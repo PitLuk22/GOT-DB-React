@@ -3,8 +3,11 @@ import ItemList from '../itemList';
 import ItemDetails, { Record } from '../itemDetails'
 import ErrorMessage from '../errorMessage';
 import RowBlock from '../rowBlock';
+import GotService from '../../services/gotService';
 
-export default class CharacterPage extends Component {
+export default class CharactersPage extends Component {
+
+	got = new GotService();
 
 	state = {
 		selectedItemID: null,
@@ -24,22 +27,6 @@ export default class CharacterPage extends Component {
 		})
 	}
 
-	generateRandomKey() {
-		return new Date().getTime() + Math.random();
-	}
-
-	setFieldAndLabel(arr) {
-		return arr.map(field => {
-			const label = field[0].toUpperCase() + field.slice(1);
-			return (
-				<Record
-					key={this.generateRandomKey()}
-					field={field}
-					label={label} />
-			)
-		})
-	}
-
 	render() {
 
 		if (this.state.error) {
@@ -48,27 +35,25 @@ export default class CharacterPage extends Component {
 			)
 		}
 
-		const children = this.setFieldAndLabel(this.props.fieldArray);
-
 		const itemList = (
 			<ItemList
-				about={this.props.about}
+				about={'characters'}
 				onItemSelected={this.onItemSelected}
-				getDataAll={this.props.getDataAll}
-				renderItem={this.props.renderItem} />
+				getDataAll={this.got.getAllCharacters}
+				renderItem={({ name, gender }) => `${name} (${gender})`} />
 		);
 
 		const charDetails = (
 			<>
 				<ItemDetails
 					selectedItemID={this.state.selectedItemID}
-					getData={this.props.getData}
-				>
-					{children}
-					{/* <Record field='gender' label='Gender' />
+					getData={this.got.getCharacter} >
+
+					<Record field='gender' label='Gender' />
 					<Record field='born' label='Born' />
 					<Record field='died' label='Died' />
-					<Record field='culture' label='Culture' /> */}
+					<Record field='culture' label='Culture' />
+
 				</ItemDetails>
 			</>
 		)

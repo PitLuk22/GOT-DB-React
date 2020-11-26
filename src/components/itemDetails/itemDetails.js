@@ -15,6 +15,11 @@ const Block = styled.div`
 	&:hover span i{
 		animation: arrow .8s ease-in-out infinite;
 	}
+	@keyframes arrow {
+ 		0% {transform: translateX(0);}
+ 		50% {transform: translateX( -10px);}
+ 		100% {transform: translateX( 0);}
+	}
 	span {
 		font-size: 16px;
 		i {
@@ -23,11 +28,7 @@ const Block = styled.div`
 			transition: all .3s ease;
 		}
 	}
-	@keyframes arrow {
- 		0% {transform: translateX(0);}
- 		50% {transform: translateX( -10px);}
- 		100% {transform: translateX( 0);}
-	}	
+		
 	
 `;
 
@@ -114,9 +115,9 @@ export default class ItemDetails extends Component {
 
 		// arrow or Spinner
 		if (!this.state.item) {
-			const Arrow_Spinner = !this.props.selectedItemID ? <i>&larr;</i> : <Spinner />;
+			const Arrow_Spinner = !this.props.selectedItemID ? <i className='arrow'>&larr;</i> : <Spinner />;
 			return (
-				<Block className='rounded'>
+				<Block className='rounded activate-arrow'>
 					<span>{Arrow_Spinner} Please, select a character!</span>
 				</Block>
 			)
