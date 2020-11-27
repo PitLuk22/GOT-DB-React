@@ -14,7 +14,7 @@ code {
 }
 
 .app {
-	background: blue url('img/got.jpeg') center center no-repeat;
+	background: black url('img/got.jpeg') center center no-repeat;
 	background-size: cover;
 	min-height: 100vh;
 
@@ -44,40 +44,4 @@ a:focus {
 a:active {
 	text-decoration: none;
 	color: inherit;
-}
-
-@media(max-width: 576px) {
-	.header {
-		flex-direction: column;
-		padding-top: 30px;
-	}
-
-	.header h3 {
-		margin-bottom: 30px;
-	}
-
-	.arrow {
-		transform: rotate(90deg);
-	}
-
-	.activate-arrow:hover span .arrow {
-		transform: rotate(90deg);
-		animation: arroww .8s ease-in-out infinite;
-	}
-
-
-}
-
-@keyframes arroww {
-	0% {
-		transform: translateY(0);
-	}
-
-	50% {
-		transform: translateY(20px);
-	}
-
-	100% {
-		transform: translateY(0);
-	}
 }

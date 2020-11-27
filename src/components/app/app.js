@@ -2,20 +2,18 @@ import React, { Component } from 'react';
 import { Container, Row, Col, Button } from 'reactstrap';
 import Header from '../header';
 import RandomChar from '../randomChar';
-import CharactersPage from '../pages/charactersPage';
-import HousesPage from '../pages/housesPage';
-import BooksPage from '../pages/booksPage';
+import { CharactersPage, HousesPage, BooksPage, BooksItem } from '../pages';
 import styled from 'styled-components';
 import { BrowserRouter as Router, Route } from "react-router-dom";
+
 
 const Btn = styled(Button)`
 	width: 100%;
 	padding: 10px;
 	margin-bottom: 20px;
 `;
-
+//TODO: Сделать mainPage, связать роутами, обработать неверный путь, написать компонент с ошибкой и ссылкой на mainPage
 export default class App extends Component {
-
 
 	state = {
 		showRandomChar: true
@@ -28,7 +26,6 @@ export default class App extends Component {
 	}
 
 	render() {
-		// const randomCharBlock = this.state.showRandomChar ? <RandomChar /> : null;
 		const btnText = this.state.showRandomChar ? 'Close' : 'Open';
 		return (
 			<>
@@ -45,9 +42,15 @@ export default class App extends Component {
 										{btnText} random character block
 										</Btn>
 								</Col>
-								<Route path='/characters' component={CharactersPage} />
+								<Route path='/characters' exact component={CharactersPage} />
 								<Route path='/houses' component={HousesPage} />
-								<Route path='/books' component={BooksPage} />
+								<Route path='/books' exact component={BooksPage} />
+								<Route path='/books/:id' render={
+									({ match }) => {
+										const { id } = match.params;
+										return <BooksItem bookID={id} />;
+									}
+								} />
 							</Row>
 						</Container>
 					</div>
@@ -56,4 +59,3 @@ export default class App extends Component {
 		);
 	}
 }
-

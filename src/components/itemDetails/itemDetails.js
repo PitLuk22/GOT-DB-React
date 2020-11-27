@@ -13,12 +13,12 @@ const Block = styled.div`
 	margin-bottom: 40px;
 	font-size: 16px;
 	&:hover span i{
-		animation: arrow .8s ease-in-out infinite;
+		animation: horizontalArrow .8s ease-in-out infinite;
 	}
-	@keyframes arrow {
+	@keyframes horizontalArrow {
  		0% {transform: translateX(0);}
  		50% {transform: translateX( -10px);}
- 		100% {transform: translateX( 0);}
+		100% {transform: translateX( 0);}
 	}
 	span {
 		font-size: 16px;
@@ -26,10 +26,24 @@ const Block = styled.div`
 			display: inline-block;
 			font-size: 25px;
 			transition: all .3s ease;
+			transform: rotate(0);
 		}
 	}
 		
-	
+	@media(max-width: 767px) {
+		text-align: center;
+		span i {
+			transform: rotate(90deg)
+		}
+		&:hover span i {
+			animation: verticalarrow .8s ease-in-out infinite;
+		}
+		@keyframes verticalarrow {
+		0% {transform: translateY(0) rotate(90deg);}
+		50% {transform: translateY(-10px)rotate(90deg);}
+		100% {transform: translateY(0) rotate(90deg);}
+		}	
+	}
 `;
 
 const Title = styled.h4`
@@ -74,7 +88,7 @@ export default class ItemDetails extends Component {
 		this.getItem();
 	}
 	componentDidUpdate(prevProps) {
-		if (this.props.selectedItemID !== prevProps.selectedItemID) {
+		if (this.props.bookID !== prevProps.bookID) {
 			this.getItem();
 		}
 	}
@@ -86,14 +100,18 @@ export default class ItemDetails extends Component {
 	}
 
 	getItem = () => {
-		if (!this.props.selectedItemID) {
+		// if (!this.props.selectedItemID) {
+		// 	return;
+		// }
+		console.log(this.props.bookID);
+		if (!this.props.bookID) {
 			return;
 		}
 		this.setState({ loading: true })
+		const { bookID, getData } = this.props;
 
-		const { selectedItemID, getData } = this.props;
 
-		getData(selectedItemID)
+		getData(bookID)
 			.then(item => {
 				this.setState({
 					item: item,
@@ -115,7 +133,7 @@ export default class ItemDetails extends Component {
 
 		// arrow or Spinner
 		if (!this.state.item) {
-			const Arrow_Spinner = !this.props.selectedItemID ? <i className='arrow'>&larr;</i> : <Spinner />;
+			const Arrow_Spinner = !this.props.bookID ? <i className='arrow'>&larr;</i> : <Spinner />;
 			return (
 				<Block className='rounded activate-arrow'>
 					<span>{Arrow_Spinner} Please, select a character!</span>

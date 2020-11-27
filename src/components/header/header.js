@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
 const HeaderBlock = styled.div`
 	height: 80px;
@@ -8,6 +8,13 @@ const HeaderBlock = styled.div`
 	align-items: center;
 	justify-content: space-between;
 	margin-bottom: 50px;
+	@media(max-width: 767px) {
+		flex-direction: column;
+		padding-top: 30px;
+		h3 {
+			margin-bottom: 30px;
+		}
+	}
 `;
 
 const HeaderLogo = styled.h3`
@@ -30,17 +37,26 @@ const HeaderLinks = styled.ul`
 			border-radius: 10px; 
 			transition: all .3s ease;
 			&:hover {
-				background-color: #D7FFFE;
+				background-color: #89bbbb;
 				color: #000;
 			}
+		}
+		.active {
+			background-color: #D7FFFE;
+			color: #000;
 		}
 	}
 `;
 
-const Header = () => {
+const Header = ({ location }) => {
+
+	const setActiveClass = (nameOfPage) => {
+		return location.pathname.includes(nameOfPage) ? 'active' : '';
+	}
+
 	return (
 		<>
-			<HeaderBlock className='header'>
+			<HeaderBlock>
 				<HeaderLogo>
 					<Link to="/">
 						Game of Thrones DB
@@ -48,13 +64,25 @@ const Header = () => {
 				</HeaderLogo>
 				<HeaderLinks>
 					<li>
-						<Link to="/characters">Characters</Link>
+						<Link
+							to="/characters/"
+							className={setActiveClass('characters')}>
+							Characters
+						</Link>
 					</li>
 					<li>
-						<Link to="/houses">Houses</Link>
+						<Link
+							to="/houses/"
+							className={setActiveClass('houses')}>
+							Houses
+						</Link>
 					</li>
 					<li>
-						<Link to="/books">Books</Link>
+						<Link
+							to="/books/"
+							className={setActiveClass('books')}>
+							Books
+						</Link>
 					</li>
 				</HeaderLinks>
 			</HeaderBlock>
@@ -62,4 +90,4 @@ const Header = () => {
 	)
 }
 
-export default Header;
+export default withRouter(Header);
