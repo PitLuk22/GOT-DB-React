@@ -100,10 +100,6 @@ export default class ItemDetails extends Component {
 	}
 
 	getItem = () => {
-		// if (!this.props.selectedItemID) {
-		// 	return;
-		// }
-		console.log(this.props.bookID);
 		if (!this.props.bookID) {
 			return;
 		}

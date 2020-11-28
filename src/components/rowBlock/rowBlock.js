@@ -6,6 +6,9 @@ export default class RowBlock extends Component {
 		return (
 			<>
 				<Col md="6" lg="4">
+					{this.props.random}
+				</Col>
+				<Col md="6" lg="4">
 					{this.props.left}
 				</Col>
 				<Col md="12" lg="4">

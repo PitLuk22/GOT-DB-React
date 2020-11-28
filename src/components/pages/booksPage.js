@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Row, Col } from 'reactstrap';
+import { Col } from 'reactstrap';
 import ItemList from '../itemList';
 import ErrorMessage from '../errorMessage';
 import GotService from '../../services/gotService';
 import { withRouter } from 'react-router-dom';
-
+import RandomItem from '../randomItem';
 class BooksPage extends Component {
 
 	got = new GotService();
@@ -28,8 +28,28 @@ class BooksPage extends Component {
 			)
 		}
 
+		const randomBook = (
+			<RandomItem
+				about={'book'}
+				range={[1, 10]}
+				getData={this.got.getBook}
+				dataProcessing={(house) => {
+					const { country, authors, numberOfPages, publisher } = house;
+					return {
+						'Country': country,
+						'Authors': authors,
+						'Number of pages': numberOfPages,
+						'Publisher': publisher
+					};
+				}} />
+		);
+
+
 		return (
 			<>
+				<Col md="6" lg="4">
+					{randomBook}
+				</Col>
 				<Col md="6" lg="8">
 					<ItemList
 						about={'books'}

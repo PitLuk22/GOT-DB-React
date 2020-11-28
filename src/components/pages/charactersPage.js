@@ -4,6 +4,7 @@ import ItemDetails, { Record } from '../itemDetails'
 import ErrorMessage from '../errorMessage';
 import RowBlock from '../rowBlock';
 import GotService from '../../services/gotService';
+import RandomItem from '../randomItem';
 
 export default class CharactersPage extends Component {
 
@@ -35,6 +36,23 @@ export default class CharactersPage extends Component {
 			)
 		}
 
+		const randomCharacter = (
+			<RandomItem
+				about={'character'}
+				range={[40, 140]}
+				getData={this.got.getCharacter}
+				dataProcessing={(char) => {
+					const { gender, born, died, culture } = char;
+					return {
+						'Gender': gender,
+						'Born': born,
+						'Died': died,
+						'Culture': culture
+					};
+				}} />
+		);
+
+
 		const itemList = (
 			<ItemList
 				about={'characters'}
@@ -59,7 +77,7 @@ export default class CharactersPage extends Component {
 		)
 
 		return (
-			<RowBlock left={itemList} right={charDetails} />
+			<RowBlock random={randomCharacter} left={itemList} right={charDetails} />
 		)
 	}
 }
