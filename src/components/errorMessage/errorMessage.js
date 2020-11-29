@@ -1,22 +1,28 @@
 import React from 'react';
-import img from './error.gif';
+import img from '../../img/error.gif';
+import { Button } from 'reactstrap';
 import styled from 'styled-components';
 
 const Img = styled.img`
-	margin-bottom: 10px;
+	width: 100%;
+	height: auto;
+	border-radius: 10px;
 `;
 
 const Span = styled.span`
+	text-align: center;
 	font-weight: bold;
 	font-size: 20px;
+	color: #000;
 `;
+
 
 
 const ErrorMessage = () => {
 	return (
 		<>
-			<Img src={img} alt="error" />
 			<Span>Something went wrong!</Span>
+			<Img src={img} alt="error" />
 		</>
 	)
 }

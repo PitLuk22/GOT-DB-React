@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { ListGroup, ListGroupItem } from 'reactstrap';
-import GotService from '../../services/gotService';
 import InfoSpan from '../infoSpan'
 import Spinner from '../spinner'
 import ErrorMessage from '../errorMessage';
+import WrongPath from '../wrongPath';
 import styled from 'styled-components';
 
 
@@ -76,12 +76,11 @@ export { Record };
 //TODO: Заменить в этом компоненте char на что-то нейтральное!! //FIXME:
 export default class ItemDetails extends Component {
 
-	got = new GotService();
-
 	state = {
 		item: null,
 		loading: true,
-		error: false
+		error: false,
+		wrongPath: false
 	}
 
 	componentDidMount() {
@@ -114,7 +113,11 @@ export default class ItemDetails extends Component {
 					loading: false
 				})
 			})
-			.catch()
+			.catch(() => {
+				this.setState({
+					wrongPath: true
+				})
+			})
 		// this.foo.bar = 0; // error generator
 	}
 
@@ -124,6 +127,13 @@ export default class ItemDetails extends Component {
 			console.log('we found a error in render');
 			return (
 				<ErrorMessage />
+			)
+		}
+		// Wrong path
+		if (this.state.wrongPath) {
+			console.log('you a lost');
+			return (
+				<WrongPath />
 			)
 		}
 

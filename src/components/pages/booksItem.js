@@ -30,7 +30,7 @@ export default class BooksItem extends Component {
 
 		return (
 			<>
-				<Col md="6" lg="8">
+				<Col md={{ size: 6, offset: 3 }} lg={{ size: 8, offset: 2 }}>
 					<ItemDetails
 						bookID={this.props.bookID}
 						getData={this.got.getBook} >

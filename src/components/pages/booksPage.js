@@ -44,7 +44,6 @@ class BooksPage extends Component {
 				}} />
 		);
 
-
 		return (
 			<>
 				<Col md="6" lg="4">
