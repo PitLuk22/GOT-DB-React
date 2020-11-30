@@ -3,7 +3,7 @@ import { ListGroup, ListGroupItem, Button } from 'reactstrap';
 import styled from 'styled-components';
 import InfoSpan from '../infoSpan'
 import ErrorMessage from '../errorMessage/errorMessage';
-
+import PropTypes from 'prop-types'
 
 const RandomBlock = styled.div`
 	position: relative;
@@ -46,9 +46,18 @@ export default class RandomItem extends Component {
 		showRandomItem: true
 	}
 
+	static defaultProps = {
+		interval: 15000
+	}
+
+	static propTypes = {
+		interval: PropTypes.number
+	}
+
 	componentDidMount() {
+		const { interval } = this.props;
 		this.updateItem();
-		// this.timerId = setInterval(this.updateItem, 3000);
+		this.timerId = setInterval(this.updateItem, interval);
 	}
 	componentDidUpdate(prevProps, prevState) {
 		if (this.state.showRandomItem !== prevState.showRandomItem) {
@@ -66,8 +75,9 @@ export default class RandomItem extends Component {
 	}
 
 	checkRandomBlock() {
+		const { interval } = this.props;
 		if (!this.state.showRandomItem) clearInterval(this.timerId);
-		else this.timerId = setInterval(this.updateItem, 3000);
+		else this.timerId = setInterval(this.updateItem, interval);
 	}
 
 	onItemLoaded = (item) => {
@@ -157,5 +167,3 @@ export default class RandomItem extends Component {
 		)
 	}
 }
-
-

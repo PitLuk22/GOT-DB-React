@@ -1,16 +1,31 @@
 import React from 'react';
 import img from '../../img/error.gif';
-import { Button } from 'reactstrap';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom'
 
 const Wrapper = styled.div`
 	position: relative;
 	margin: 0 auto ;
-	/* width: 600px;
-	height: 500px; */
 	border-radius: 10px;
 	overflow: hidden;
 	color: #fff;
+	a {
+		position: absolute;
+		bottom: 10%;
+		left: 50%;
+		transform: translateX(-50%);
+		padding: 10px 20px;
+		font-weight: bold;
+		font-size: 20px;
+		color: #fff;
+		padding: 10px 20px;
+		background-color: #007bff;
+		border-radius: 5px;
+		transition: all .3s ease;
+		&:hover {
+			background-color: #0267d3;
+		}
+	}
 `;
 
 const Img = styled.img`
@@ -26,20 +41,9 @@ const Span = styled.span`
 	left: 50%;
 	transform: translateX(-50%);
 	font-weight: bold;
-	font-size: 25px;
+	font-size: 22px;
 	color: #000;
 	text-align: center;
-`;
-
-const Btn = styled(Button)`
-	position: absolute;
-	bottom: 10%;
-	left: 50%;
-	transform: translateX(-50%);
-	padding: 10px 20px;
-	font-weight: bold;
-	font-size: 20px;
-	color: #fff;
 `;
 
 const WrongPath = () => {
@@ -51,7 +55,7 @@ const WrongPath = () => {
 			<Wrapper className='wrongPath'>
 				<Span>You are lost!<br /> Try to return to the main page</Span>
 				<Img src={img} alt="error" />
-				<Btn href='/' color='primary'>Back to main page</Btn>
+				<Link to='/'>Back to main page</Link>
 			</Wrapper>
 		</>
 	)

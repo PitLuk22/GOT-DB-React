@@ -5,6 +5,7 @@ import GotService from '../../services/gotService'
 import { MainPage, CharactersPage, HousesPage, BooksPage, BooksItem } from '../pages';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import WrongPath from '../wrongPath';
+import ErrorMessage from '../errorMessage';
 
 //TODO: Сделать mainPage, связать роутами, обработать неверный путь, написать компонент с ошибкой и ссылкой на mainPage
 export default class App extends Component {
@@ -12,23 +13,49 @@ export default class App extends Component {
 	got = new GotService();
 
 	state = {
-		pathes: ['/', '/characters/', '/houses/', '/books/'],
+		pathes: ['', 'characters', 'houses', 'books'],
+		range: {
+			characters: { min: 1, max: 200 },
+			houses: { min: 1, max: 40 },
+			books: { min: 1, max: 12 }
+		},
 		error: false
 	}
 
-	checkPagePath(location, pathes) {
-		if (!pathes.includes(location)) {
-			return <WrongPath />
+	checkPagePath(location) {
+		const { pathes, range: { characters, houses, books } } = this.state;
+
+		const arrFromLocation = location.split('/');
+		const [, page, numberOfPage] = arrFromLocation;
+
+		if (pathes.includes(page)) {
+
+			switch (page) {
+				case pathes[1]:
+					if (numberOfPage !== '' && !(numberOfPage >= characters.min && numberOfPage <= characters.max)) {
+						return <WrongPath />;
+					}
+					break;
+				case pathes[2]:
+					if (numberOfPage !== '' && !(numberOfPage >= houses.min && numberOfPage <= houses.max)) {
+						return <WrongPath />;
+					}
+					break;
+				case pathes[3]:
+					if (numberOfPage !== '' && !(numberOfPage >= books.min && numberOfPage <= books.max)) {
+						return <WrongPath />;
+					}
+					break;
+				default:
+				// here main page
+			}
+
+		} else {
+			return <WrongPath />;
 		}
 	}
 
-	checkWrongNumberOfPage() {
-		return <WrongPath />
-	}
-
 	render() {
-
-		const pathes = this.state.pathes;
 
 		return (
 			<>
@@ -45,13 +72,12 @@ export default class App extends Component {
 								<Route path='/books/:id' render={
 									({ match }) => {
 										const { id } = match.params;
-										typeof +id === 'number' ? pathes[3] = `/books/${id}` : this.checkWrongNumberOfPage();
 										return <BooksItem bookID={id} />;
 									}
 								} />
 								<Route path='' render={
 									({ location }) => {
-										return this.checkPagePath(location.pathname, pathes);
+										return this.checkPagePath(location.pathname);
 									}
 								} />
 
