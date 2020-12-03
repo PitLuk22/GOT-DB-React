@@ -91,7 +91,6 @@ export default class App extends Component {
 										return this.checkPagePath(location.pathname);
 									}
 								} />
-
 							</Row>
 						</Container>
 					</div>
