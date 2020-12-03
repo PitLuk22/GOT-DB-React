@@ -21,6 +21,7 @@ const Wrapper = styled.div`
 		padding: 10px 20px;
 		background-color: #007bff;
 		border-radius: 5px;
+		text-align: center;
 		transition: all .3s ease;
 		&:hover {
 			background-color: #0267d3;

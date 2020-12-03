@@ -57,17 +57,26 @@ const Title = styled.h4`
 
 const Term = styled.span`
 	font-weight: bold;
+	
+`;
+
+const ListGroupItemStyled = styled(ListGroupItem)`
+	.information {
+		max-width: 450px;
+	}
 `;
 
 // field contains params (gender, born, died, culture)
 // char - it's object with certain character data
 // char[field] === cahr.gender or char.born or char.died or char.culture
 const Record = ({ item, field, label, loading }) => {
+
+
 	return (
-		<ListGroupItem className='d-flex justify-content-between'>
+		<ListGroupItemStyled className='d-flex justify-content-between'>
 			<Term className='term'>{label}</Term>
 			<InfoSpan info={item[field]} load={loading} />
-		</ListGroupItem>
+		</ListGroupItemStyled>
 	)
 }
 
@@ -87,7 +96,7 @@ export default class ItemDetails extends Component {
 		this.getItem();
 	}
 	componentDidUpdate(prevProps) {
-		if (this.props.bookID !== prevProps.bookID) {
+		if (this.props.itemID !== prevProps.itemID) {
 			this.getItem();
 		}
 	}
@@ -99,14 +108,14 @@ export default class ItemDetails extends Component {
 	}
 
 	getItem = () => {
-		if (!this.props.bookID) {
+		const { itemID, getData } = this.props;
+		if (!itemID) {
 			return;
 		}
+
 		this.setState({ loading: true })
-		const { bookID, getData } = this.props;
 
-
-		getData(bookID)
+		getData(itemID)
 			.then(item => {
 				this.setState({
 					item: item,
@@ -139,10 +148,10 @@ export default class ItemDetails extends Component {
 
 		// arrow or Spinner
 		if (!this.state.item) {
-			const Arrow_Spinner = !this.props.bookID ? <i className='arrow'>&larr;</i> : <Spinner />;
+			const Arrow_Spinner = !this.props.itemID ? <i className='arrow'>&larr;</i> : <Spinner />;
 			return (
 				<Block className='rounded activate-arrow'>
-					<span>{Arrow_Spinner} Please, select a character!</span>
+					<span>{Arrow_Spinner} Loading...</span>
 				</Block>
 			)
 		}

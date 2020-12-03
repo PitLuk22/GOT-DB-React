@@ -8,11 +8,8 @@ export default class RowBlock extends Component {
 				<Col md="6" lg="4">
 					{this.props.random}
 				</Col>
-				<Col md="6" lg="4">
-					{this.props.left}
-				</Col>
-				<Col md="12" lg="4">
-					{this.props.right}
+				<Col md="6" lg="8">
+					{this.props.list}
 				</Col>
 			</>
 		)

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Col } from 'reactstrap';
+
 import ItemList from '../itemList';
 import ErrorMessage from '../errorMessage';
 import GotService from '../../services/gotService';
 import { withRouter } from 'react-router-dom';
 import RandomItem from '../randomItem';
+import RowBlock from '../rowBlock';
 class BooksPage extends Component {
 
 	got = new GotService();
@@ -44,22 +45,17 @@ class BooksPage extends Component {
 				}} />
 		);
 
-		return (
-			<>
-				<Col md="6" lg="4">
-					{randomBook}
-				</Col>
-				<Col md="6" lg="8">
-					<ItemList
-						about={'books'}
-						onItemSelected={(id) => {
-							this.props.history.push(id);
-						}}
-						getDataAll={this.got.getAllBooks}
-						renderItem={({ name, authors }) => `${name} (${authors})`} />
-				</Col>
-			</>
+		const itemList = (
+			<ItemList
+				about={'books'}
+				onItemSelected={(id) => {
+					this.props.history.push(id);
+				}}
+				getDataAll={this.got.getAllBooks}
+				renderItem={({ name, authors }) => `${name} (${authors})`} />
 		)
+
+		return <RowBlock random={randomBook} list={itemList} />
 	}
 }
 

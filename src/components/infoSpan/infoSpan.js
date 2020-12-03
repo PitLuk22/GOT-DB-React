@@ -1,5 +1,12 @@
 import React from 'react';
 import Spinner from '../spinner'
+import styled from 'styled-components';
+
+const Span = styled.span`
+	max-width: 150px;
+	text-align: right;
+	word-wrap: break-word;
+`;
 
 const InfoSpan = ({ info, load }) => {
 
@@ -8,7 +15,7 @@ const InfoSpan = ({ info, load }) => {
 
 	return (
 		<>
-			<span style={{ textAlign: 'right', maxWidth: '150px', wordWrap: 'break-word' }}>{spinner}</span>
+			<Span className='information'>{spinner}</Span>
 		</>
 	)
 }

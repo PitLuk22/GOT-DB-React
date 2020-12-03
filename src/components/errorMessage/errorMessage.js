@@ -1,6 +1,5 @@
 import React from 'react';
 import img from '../../img/error.gif';
-import { Button } from 'reactstrap';
 import styled from 'styled-components';
 
 const Img = styled.img`

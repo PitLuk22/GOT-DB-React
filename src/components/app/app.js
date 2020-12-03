@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import { Container, Row } from 'reactstrap';
 import Header from '../header';
 import GotService from '../../services/gotService'
-import { MainPage, CharactersPage, HousesPage, BooksPage, BooksItem } from '../pages';
+import { MainPage, CharactersPage, CharactersItem, HousesPage, HousesItem, BooksPage, BooksItem } from '../pages';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import WrongPath from '../wrongPath';
-import ErrorMessage from '../errorMessage';
 
 //TODO: Сделать mainPage, связать роутами, обработать неверный путь, написать компонент с ошибкой и ссылкой на mainPage
 export default class App extends Component {
@@ -15,8 +14,8 @@ export default class App extends Component {
 	state = {
 		pathes: ['', 'characters', 'houses', 'books'],
 		range: {
-			characters: { min: 1, max: 200 },
-			houses: { min: 1, max: 40 },
+			characters: { min: 1, max: 500 },
+			houses: { min: 1, max: 500 },
 			books: { min: 1, max: 12 }
 		},
 		error: false
@@ -67,7 +66,19 @@ export default class App extends Component {
 
 								<Route path='/' exact component={MainPage} />
 								<Route path='/characters/' exact component={CharactersPage} />
-								<Route path='/houses/' component={HousesPage} />
+								<Route path='/characters/:id' render={
+									({ match }) => {
+										const { id } = match.params;
+										return <CharactersItem characterID={id} />
+									}
+								} />
+								<Route path='/houses/' exact component={HousesPage} />
+								<Route path='/houses/:id' render={
+									({ match }) => {
+										const { id } = match.params;
+										return <HousesItem houseID={id} />;
+									}
+								} />
 								<Route path='/books/' exact component={BooksPage} />
 								<Route path='/books/:id' render={
 									({ match }) => {

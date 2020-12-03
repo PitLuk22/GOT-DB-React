@@ -1,18 +1,15 @@
 import React, { Component } from 'react';
 import ItemList from '../itemList';
-import ItemDetails, { Record } from '../itemDetails'
 import ErrorMessage from '../errorMessage';
 import RowBlock from '../rowBlock';
 import GotService from '../../services/gotService';
 import RandomItem from '../randomItem';
-
-
-export default class HousesPage extends Component {
+import { withRouter } from 'react-router-dom';
+class HousesPage extends Component {
 
 	got = new GotService();
 
 	state = {
-		selectedItemID: null,
 		error: false
 	}
 
@@ -20,12 +17,6 @@ export default class HousesPage extends Component {
 		console.log('error');
 		this.setState({
 			error: true
-		})
-	}
-
-	onItemSelected = (id) => {
-		this.setState({
-			selectedItemID: id
 		})
 	}
 
@@ -37,7 +28,7 @@ export default class HousesPage extends Component {
 			)
 		}
 
-		const randomHouse = (
+		const randomCharacter = (
 			<RandomItem
 				about={'house'}
 				range={[5, 40]}
@@ -55,27 +46,16 @@ export default class HousesPage extends Component {
 		const itemList = (
 			<ItemList
 				about={'houses'}
-				onItemSelected={this.onItemSelected}
+				onItemSelected={(id) => {
+					this.props.history.push(id);
+				}}
 				getDataAll={this.got.getAllHouses}
 				renderItem={({ name, region }) => `${name} (${region})`} />
 		);
 
-		const houseDetails = (
-			<>
-				<ItemDetails
-					selectedItemID={this.state.selectedItemID}
-					getData={this.got.getHouse} >
-
-					<Record field='region' label='Region' />
-					<Record field='words' label='Words' />
-					<Record field='coatOfArms' label='Coat of arms' />
-
-				</ItemDetails>
-			</>
-		)
-
 		return (
-			<RowBlock random={randomHouse} left={itemList} right={houseDetails} />
+			<RowBlock random={randomCharacter} list={itemList} />
 		)
 	}
 }
+export default withRouter(HousesPage);

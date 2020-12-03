@@ -19,7 +19,7 @@ const Btn = styled(Button)`
 	margin-bottom: 20px;
 `;
 
-export default class itemList extends Component {
+export default class ItemList extends Component {
 	constructor(props) {
 		super(props)
 		this.booksListPage = false;
@@ -36,7 +36,7 @@ export default class itemList extends Component {
 	}
 
 	generateRandomKey() {
-		return new Date().getTime() + Math.random();
+		return new Date().getTime() * Math.random();
 	}
 
 	setBookslistNumber(boolean) {

@@ -5,7 +5,7 @@ import ErrorMessage from '../errorMessage';
 import GotService from '../../services/gotService';
 
 
-export default class BooksItem extends Component {
+export default class HousesItem extends Component {
 
 	got = new GotService();
 
@@ -32,13 +32,12 @@ export default class BooksItem extends Component {
 			<>
 				<Col md={{ size: 6, offset: 3 }} lg={{ size: 8, offset: 2 }}>
 					<ItemDetails
-						itemID={this.props.bookID}
-						getData={this.got.getBook} >
+						itemID={this.props.houseID}
+						getData={this.got.getHouse} >
 
-						<Record field='country' label='Country' />
-						<Record field='authors' label='Authors' />
-						<Record field='numberOfPages' label='Number of pages' />
-						<Record field='publisher' label='Publisher' />
+						<Record field='region' label='Region' />
+						<Record field='words' label='Words' />
+						<Record field='coatOfArms' label='Coat of arms' />
 
 					</ItemDetails>
 				</Col>
@@ -46,3 +45,4 @@ export default class BooksItem extends Component {
 		)
 	}
 }
+
