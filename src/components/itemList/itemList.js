@@ -1,4 +1,4 @@
-import { React, Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ListGroup, ListGroupItem, Button } from 'reactstrap';
 import Spinner from '../spinner/spinner';
 import styled from 'styled-components';
@@ -19,89 +19,75 @@ const Btn = styled(Button)`
 	margin-bottom: 20px;
 `;
 
-export default class ItemList extends Component {
-	constructor(props) {
-		super(props)
-		this.booksListPage = false;
-	}
+function ItemList({ about, getDataAll, renderItem, onItemSelected }) {
 
-	// 0) Set State
-	state = {
-		itemList: null
-	}
+	const [itemList, updateItemList] = useState(null);
+	const [booksListPage, updateBooksListPage] = useState(false);
 
-	// 5) when component was rendered, get info from API and set State
-	componentDidMount() {
-		this.onUpdateList();
-	}
+	useEffect(() => {
+		onUpdateList();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [null]);
 
-	generateRandomKey() {
+	// Create unique KEY
+	function generateRandomKey() {
 		return new Date().getTime() * Math.random();
 	}
 
-	setBookslistNumber(boolean) {
-		this.booksListPage = !boolean;
-		return this.booksListPage ? 1 : 2;
+	// func for booksPage
+	function setBookslistNumber() {
+		updateBooksListPage(!booksListPage);
+		return booksListPage ? 1 : 2;
 	}
 
-	onUpdateList = () => {
-		let numberOfPage = this.props.about.includes('books') ? this.setBookslistNumber(this.booksListPage) : Math.floor(Math.random() * 40 + 5);
+	// func with server work 
+	function onUpdateList() {
+		let numberOfPage = about.includes('books') ? setBookslistNumber() : Math.floor(Math.random() * 40 + 5);
 
 		// Change state for Spinner
-		this.setState({ itemList: null });
+		updateItemList(null);
 
-		const { getDataAll } = this.props;
 		getDataAll(numberOfPage)
-			.then((itemList) => {
-				this.setState({ itemList })
+			.then((data) => {
+				updateItemList(data)
 			});
 	}
 
-	renderItems(arr) {
-		// 3) return Spinners if (arr === null)
-		// 8) return Names 
+	// return arr with elements 
+	function renderItems(arr) {
+
 		const array = arr ? arr : Array(10).fill(<Spinner />);
 
 		return array.map(item => {
 
-			const { renderItem } = this.props;
-
 			// if current item have property $$typeof => it's a component (Spinner), else it's an char/book/house object 
 			const element = item.$$typeof ? item : renderItem(item);
 			// render(item) return string. For example: `${name} ${gender}` 
-			const uniqueKey = this.generateRandomKey();
+			const uniqueKey = generateRandomKey();
 
 			return (
 				<ListGroupItemPointer
 					key={uniqueKey}
-					onClick={() => this.props.onItemSelected(item.id)}>
+					onClick={() => onItemSelected(item.id)}>
 					{element}
 				</ListGroupItemPointer>
 			)
 		})
 	}
 
-	// 1) start render component
-	// 6) render component after set State
-	render() {
-		const arr = this.state.itemList;
-		// 2) get Spinners
-		// 7) get Names
-		const items = this.renderItems(arr);
+	const items = renderItems(itemList);
 
-		// 4) render component with Spinners
-		// 9) render component with Names
-		return (
-			<>
-				<ListGroup style={{ marginBottom: '20px' }}>
-					{items}
-				</ListGroup >
-				<Btn
-					color="info"
-					onClick={this.onUpdateList}>
-					Update list
-				</Btn>
-			</>
-		)
-	}
-} 
+	return (
+		<>
+			<ListGroup style={{ marginBottom: '20px' }}>
+				{items}
+			</ListGroup >
+			<Btn
+				color="info"
+				onClick={() => onUpdateList()}>
+				Update list
+			</Btn>
+		</>
+	)
+}
+export default ItemList;
